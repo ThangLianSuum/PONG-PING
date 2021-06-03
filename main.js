@@ -20,6 +20,8 @@ var ball = {
     dx:3,
     dy:3
 }
+rightWristX  = "";
+rightWristY = "";
 
 function setup(){
   var canvas =  createCanvas(700,600);
@@ -29,15 +31,26 @@ function setup(){
   video.hide()
 
   poseNet = ml5.poseNet(video, modelLoaded);
-  poseNet.on()
+  poseNet.on('pose', gotposes)
 }
-function modelLoaded;
+function modelLoaded()
 {
   console.log("model Loaded!");
 }
 
-
-function draw(){
+function gotposes(results)
+{
+  if(results.length > 0)
+  {
+  console.log(results)
+    
+    rightWristX = results[0].pose.rightWrist.x;
+    rightWristY = results[0].pose.rightWrist.y;
+    console.log("rightWristX = " + rightWristX +" rightWristY = "+ rightWristY);
+  }
+}
+function draw()
+{
   image()
  background(0); 
 
@@ -48,7 +61,14 @@ function draw(){
  fill("black");
  stroke("black");
  rect(0,0,20,700);
- 
+
+ if(rightWristX > 0.2 )
+ {
+fill("#FF000");
+stroke("#FF000");
+circle(rightWristX,rightWristY,100);
+ }
+
    //funtion paddleInCanvas call 
    paddleInCanvas();
  
