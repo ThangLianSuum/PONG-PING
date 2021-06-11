@@ -22,8 +22,17 @@ var ball = {
 }
 rightWristX  = "";
 rightWristY = "";
+game_status = "";
+
+function startGame()
+{
+  game_status = "start";
+  document.getElementById("Status").innerHTML = "game Is Loading";
+}
 
 function setup(){
+  if(game_status == "start")
+  {
   var canvas =  createCanvas(700,600);
   canvas.parent('canvas');
   video = creatCapture(VIDEO)
@@ -32,6 +41,7 @@ function setup(){
 
   poseNet = ml5.poseNet(video, modelLoaded);
   poseNet.on('pose', gotposes)
+  }
 }
 function modelLoaded()
 {
@@ -51,6 +61,8 @@ function gotposes(results)
 }
 function draw()
 {
+  if(game_status == "start")
+  {
   image()
  background(0); 
 
@@ -97,6 +109,7 @@ circle(rightWristX,rightWristY,100);
    //function move call which in very important
     move();
     image(video, 0, 0);
+}
 }
 
 
